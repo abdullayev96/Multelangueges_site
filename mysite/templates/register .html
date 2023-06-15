@@ -1,12 +1,17 @@
-{% extends 'women/base.html' %}
+{% extends 'base.html' %}
+
+{% load crispy_forms_tags %}
 
 {% block content %}
 <h1 > {{title }} </h1 >
+<div class="text-center">
+<h1 class="h4 text-gray-900 mb-4">Create an Account!</h1>
+</div>
 
 <form method = "post">
     {% csrf_token %}
-    {{ form.as_p  }}
-    <button type = "submit" > Register </button >
+    {{form | crispy}}
+    <button type = "submit" >SignUp</button >
 </form >
 
 {% endblock %}

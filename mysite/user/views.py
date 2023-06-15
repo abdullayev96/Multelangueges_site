@@ -7,13 +7,15 @@ from django.views.generic import CreateView, DetailView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.urls import reverse_lazy
 from django.contrib.auth.forms import UserCreationForm
+from .forms import SignUpForm
+from django.contrib.auth.views import LoginView
 
 
 
 def home(request):
     text  = _("So'ngi dars ")
     news = User.objects.all().order_by('-id')
-    paginator = Paginator(news, 3)  # Show 3 contacts per page.
+    paginator = Paginator(news, 3)
 
     page_number = request.GET.get("page")
     page_obj = paginator.get_page(page_number)
@@ -31,20 +33,32 @@ class  CreateNew(CreateView):
     fields = "__all__"
     template_name = 'new.html'
 
-def Login(request):
-    return HttpResponse("""<h1>Login</h1>""")
 
 
-class RegisterUser(LoginRequiredMixin, CreateView):
-    form_class = UserCreationForm
-    template_name = 'register.html'
-    success_url = reverse_lazy('login')
 
-    def get_context_data(self, *, object_list=None, **kwargs):
-        context = super().get_context_data(**kwargs)
-        c_def = self.get_user_context(title="Registration")
-        return dict(list(context.items()) + list(c_def.items()))
+class SingUpView(CreateView):
+    form_class = SignUpForm
+    success_url = reverse_lazy('home')
+    template_name = 'register1.html'
 
+
+#
+# class LoginView_as(LoginView):
+#     form_class = LoginUserForm
+#     success_url = reverse_lazy('home')
+#     template_name = 'login.html'
+
+
+
+# class RegisterUser(LoginRequiredMixin, CreateView):
+#     form_class = UserCreationForm
+#     template_name = 'register1.html'
+#     success_url = reverse_lazy('login')
+#
+#     def get_context_data(self, *, object_list=None, **kwargs):
+#         context = super().get_context_data(**kwargs)
+#         c_def = self.get_user_context(title="Registration")
+#         return dict(list(context.items()) + list(c_def.items()))
 
 
 
